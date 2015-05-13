@@ -1,0 +1,436 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: workshops; Tablespace: 
+--
+
+CREATE TABLE categories (
+    id integer NOT NULL,
+    name character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE categories OWNER TO workshops;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: workshops
+--
+
+CREATE SEQUENCE categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE categories_id_seq OWNER TO workshops;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: workshops
+--
+
+ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: workshops; Tablespace: 
+--
+
+CREATE TABLE products (
+    id integer NOT NULL,
+    title character varying(255),
+    description text,
+    price double precision,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    category_id integer,
+    user_id integer
+);
+
+
+ALTER TABLE products OWNER TO workshops;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: workshops
+--
+
+CREATE SEQUENCE products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE products_id_seq OWNER TO workshops;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: workshops
+--
+
+ALTER SEQUENCE products_id_seq OWNED BY products.id;
+
+
+--
+-- Name: reviews; Type: TABLE; Schema: public; Owner: workshops; Tablespace: 
+--
+
+CREATE TABLE reviews (
+    id integer NOT NULL,
+    content text,
+    rating integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    product_id integer,
+    user_id integer
+);
+
+
+ALTER TABLE reviews OWNER TO workshops;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: workshops
+--
+
+CREATE SEQUENCE reviews_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE reviews_id_seq OWNER TO workshops;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: workshops
+--
+
+ALTER SEQUENCE reviews_id_seq OWNED BY reviews.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: workshops; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE schema_migrations OWNER TO workshops;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: workshops; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    firstname character varying(255) DEFAULT ''::character varying NOT NULL,
+    lastname character varying(255) DEFAULT ''::character varying NOT NULL,
+    email character varying(255) DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying(255) DEFAULT ''::character varying NOT NULL,
+    admin boolean DEFAULT false NOT NULL,
+    reset_password_token character varying(255),
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0 NOT NULL,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip character varying(255),
+    last_sign_in_ip character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE users OWNER TO workshops;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: workshops
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_id_seq OWNER TO workshops;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: workshops
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: workshops
+--
+
+ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: workshops
+--
+
+ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: workshops
+--
+
+ALTER TABLE ONLY reviews ALTER COLUMN id SET DEFAULT nextval('reviews_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: workshops
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: workshops
+--
+
+COPY categories (id, name, created_at, updated_at) FROM stdin;
+1	Clothing	2015-05-13 07:28:18.942802	2015-05-13 07:28:18.942802
+\.
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: workshops
+--
+
+SELECT pg_catalog.setval('categories_id_seq', 1, true);
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: workshops
+--
+
+COPY products (id, title, description, price, created_at, updated_at, category_id, user_id) FROM stdin;
+1	Rustic Granite Table	Dolorum eaque autem iste quasi est. Soluta placeat architecto adipisci ex sit provident vel. Esse aspernatur veritatis.	56.600000000000001	2015-05-13 07:28:19.187816	2015-05-13 07:28:19.187816	1	6
+2	Rustic Cotton Hat	Maiores assumenda molestiae similique. Dignissimos magni debitis aut. Quas iusto illo recusandae quis autem. Sit at praesentium tenetur. Occaecati sit ad.	12.49	2015-05-13 07:28:19.193816	2015-05-13 07:28:19.193816	1	4
+3	Gorgeous Plastic Pants	Ea aut quo aut et. Nulla quod omnis id nihil a quis ab. Veritatis omnis sed accusantium.	70.469999999999999	2015-05-13 07:28:19.197817	2015-05-13 07:28:19.197817	1	6
+4	Practical Steel Computer	Et adipisci aut. Ab eligendi ea modi. Rerum sed similique commodi.	83.659999999999997	2015-05-13 07:28:19.200817	2015-05-13 07:28:19.200817	1	4
+5	Rustic Wooden Car	Quia aspernatur iusto maxime. Quis et pariatur. Sed commodi et cumque ipsum iure dicta. Officia vero mollitia.	29.280000000000001	2015-05-13 07:28:19.204817	2015-05-13 07:28:19.204817	1	2
+6	Intelligent Wooden Hat	Animi voluptatum quae voluptatem reiciendis ea aut. Ullam fugit minima atque exercitationem ipsam et. Consectetur asperiores officia repellendus temporibus unde. Modi repudiandae amet commodi.	83.75	2015-05-13 07:28:19.207817	2015-05-13 07:28:19.207817	1	5
+7	Rustic Concrete Car	Ut velit rerum excepturi earum esse. Nemo et delectus perspiciatis. Et sit minus et.	29.739999999999998	2015-05-13 07:28:19.211817	2015-05-13 07:28:19.211817	1	2
+8	Awesome Granite Shirt	Similique unde quod placeat suscipit quisquam illo. Repellendus itaque voluptatem minus esse. In numquam tempore. Laborum voluptate consequatur sint.	49.210000000000001	2015-05-13 07:28:19.215818	2015-05-13 07:28:19.215818	1	5
+9	Incredible Concrete Computer	Ullam nobis quo ut aspernatur saepe. Exercitationem facere reprehenderit repellat. Accusantium assumenda sint consequuntur perferendis. Magnam error dolorem optio.	36.549999999999997	2015-05-13 07:28:46.126357	2015-05-13 07:28:46.126357	1	4
+10	Practical Steel Shoes	Exercitationem dolor optio. Facere et velit quae veritatis est sed nesciunt. Omnis quo laborum voluptates reprehenderit non quis in. Aperiam beatae ducimus. Consectetur dignissimos quo ipsa.	81.670000000000002	2015-05-13 07:28:46.132357	2015-05-13 07:28:46.132357	1	3
+11	Small Rubber Computer	Reiciendis dolorem mollitia quae eum est dignissimos. Laudantium et eum ut eos. Est aliquid totam rerum porro. Nesciunt sapiente qui deleniti unde itaque. Asperiores facilis ducimus veritatis.	79.310000000000002	2015-05-13 07:28:46.136357	2015-05-13 07:28:46.136357	1	4
+12	Rustic Cotton Hat	Qui maxime mollitia at ipsa. Modi esse aut adipisci sed. Rem sit voluptatem praesentium mollitia veniam libero. Iste sunt numquam quas et. Necessitatibus accusamus fuga et labore dicta.	12.73	2015-05-13 07:28:46.139358	2015-05-13 07:28:46.139358	1	5
+13	Sleek Rubber Computer	Adipisci modi architecto fugiat ab. Qui placeat reprehenderit alias. Itaque fugiat occaecati laudantium. Voluptates et incidunt iusto expedita dolorum.	2.8199999999999998	2015-05-13 07:28:46.142358	2015-05-13 07:28:46.142358	1	1
+14	Fantastic Rubber Gloves	Molestiae esse sit et quasi impedit voluptatem et. Quasi quidem qui mollitia quo. Et impedit voluptas. Voluptatem minima nisi magnam tenetur maxime molestias debitis. Occaecati voluptatibus ut iure aliquam et distinctio.	39.640000000000001	2015-05-13 07:28:46.145358	2015-05-13 07:28:46.145358	1	1
+15	Small Concrete Table	Laborum pariatur accusantium voluptatum laboriosam. Quibusdam consequatur non. Non quis modi.	61.630000000000003	2015-05-13 07:28:46.149358	2015-05-13 07:28:46.149358	1	5
+16	Sleek Plastic Hat	Ex tempore labore repellendus. Voluptatem veniam et inventore fugit. Quisquam repellat assumenda dolore suscipit tempore. Et accusantium harum quo sint laboriosam. Vel accusamus modi ad qui culpa consequatur.	68.849999999999994	2015-05-13 07:28:46.152358	2015-05-13 07:28:46.152358	1	3
+\.
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: workshops
+--
+
+SELECT pg_catalog.setval('products_id_seq', 16, true);
+
+
+--
+-- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: workshops
+--
+
+COPY reviews (id, content, rating, created_at, updated_at, product_id, user_id) FROM stdin;
+1	Similique ipsam est rerum odio in quis consequatur.	4	2015-05-13 07:28:19.224818	2015-05-13 07:28:19.224818	2	5
+2	Dolorem dicta natus qui ut.	1	2015-05-13 07:28:19.228818	2015-05-13 07:28:19.228818	1	1
+3	Qui aut repellat qui.	1	2015-05-13 07:28:19.232819	2015-05-13 07:28:19.232819	6	1
+4	Officiis facere fugit asperiores ex suscipit fuga.	2	2015-05-13 07:28:19.235819	2015-05-13 07:28:19.235819	8	6
+5	Esse cupiditate totam aut molestiae quod corporis.	3	2015-05-13 07:28:19.238819	2015-05-13 07:28:19.238819	1	6
+6	Ratione voluptate commodi qui doloremque quidem.	2	2015-05-13 07:28:19.240819	2015-05-13 07:28:19.240819	3	6
+7	Sequi culpa ipsum eveniet voluptate quidem.	2	2015-05-13 07:28:19.243819	2015-05-13 07:28:19.243819	2	4
+8	Ut animi sequi accusantium dolor enim et.	3	2015-05-13 07:28:19.246819	2015-05-13 07:28:19.246819	8	4
+9	Molestiae iusto amet accusantium culpa quam saepe.	1	2015-05-13 07:28:19.24982	2015-05-13 07:28:19.24982	2	2
+10	Beatae quasi aperiam quos ut quia aut dolor.	3	2015-05-13 07:28:19.25182	2015-05-13 07:28:19.25182	7	4
+11	In natus omnis enim accusamus.	3	2015-05-13 07:28:19.25482	2015-05-13 07:28:19.25482	1	2
+12	Et aperiam id unde facilis ad accusamus odio doloribus.	1	2015-05-13 07:28:19.25782	2015-05-13 07:28:19.25782	2	5
+13	Dolorem rerum nihil voluptatum id voluptate eveniet consequatur.	2	2015-05-13 07:28:19.25982	2015-05-13 07:28:19.25982	8	2
+14	Et reiciendis at itaque.	3	2015-05-13 07:28:19.26282	2015-05-13 07:28:19.26282	1	1
+15	Totam assumenda deserunt minus.	2	2015-05-13 07:28:19.264821	2015-05-13 07:28:19.264821	7	6
+16	Laborum quasi vel doloremque necessitatibus molestias in beatae debitis.	4	2015-05-13 07:28:19.267821	2015-05-13 07:28:19.267821	7	4
+17	Ducimus quisquam inventore iusto numquam cum asperiores aut perspiciatis.	4	2015-05-13 07:28:19.270821	2015-05-13 07:28:19.270821	4	3
+18	Enim itaque consequatur et excepturi tempora soluta hic.	2	2015-05-13 07:28:19.272821	2015-05-13 07:28:19.272821	1	6
+19	Ut qui possimus voluptatem reprehenderit odit rem quo occaecati.	2	2015-05-13 07:28:19.275821	2015-05-13 07:28:19.275821	5	1
+20	Eos aperiam quod tempore.	1	2015-05-13 07:28:19.277821	2015-05-13 07:28:19.277821	3	4
+21	Mollitia nulla debitis iure necessitatibus sequi culpa odio sit.	2	2015-05-13 07:28:46.160359	2015-05-13 07:28:46.160359	9	5
+22	In asperiores qui quaerat eum.	2	2015-05-13 07:28:46.17536	2015-05-13 07:28:46.17536	1	5
+23	Officia harum consequatur enim sapiente.	1	2015-05-13 07:28:46.17836	2015-05-13 07:28:46.17836	16	5
+24	Quia est vitae molestiae laborum.	4	2015-05-13 07:28:46.18136	2015-05-13 07:28:46.18136	16	6
+25	Odio dolorem aut beatae corrupti corporis.	2	2015-05-13 07:28:46.18436	2015-05-13 07:28:46.18436	14	3
+26	Repudiandae maxime non reprehenderit voluptas debitis explicabo ut rerum.	1	2015-05-13 07:28:46.18636	2015-05-13 07:28:46.18636	7	5
+27	Consectetur dignissimos nesciunt explicabo quis ut.	3	2015-05-13 07:28:46.190361	2015-05-13 07:28:46.190361	2	2
+28	Tempora eum cupiditate asperiores veritatis blanditiis.	4	2015-05-13 07:28:46.193361	2015-05-13 07:28:46.193361	10	6
+29	Non soluta fuga eum eligendi et et perferendis.	1	2015-05-13 07:28:46.196361	2015-05-13 07:28:46.196361	12	4
+30	Voluptatem ipsum ut non itaque voluptas.	3	2015-05-13 07:28:46.199361	2015-05-13 07:28:46.199361	16	2
+31	Dolore beatae autem amet libero nihil.	3	2015-05-13 07:28:46.202361	2015-05-13 07:28:46.202361	12	4
+32	Delectus et quia mollitia fuga rem consectetur minima.	2	2015-05-13 07:28:46.205361	2015-05-13 07:28:46.205361	11	1
+33	Dolor et sint enim eos.	2	2015-05-13 07:28:46.208362	2015-05-13 07:28:46.208362	8	3
+34	Consequatur dolorem minus quidem.	4	2015-05-13 07:28:46.211362	2015-05-13 07:28:46.211362	9	5
+35	Qui nam quis qui perferendis sed ipsum.	2	2015-05-13 07:28:46.214362	2015-05-13 07:28:46.214362	10	6
+36	Nobis sed assumenda ut dolores alias qui.	3	2015-05-13 07:28:46.218362	2015-05-13 07:28:46.218362	10	5
+37	Esse et ratione sed.	2	2015-05-13 07:28:46.221362	2015-05-13 07:28:46.221362	6	2
+38	Voluptatem est accusamus ut voluptas reiciendis odio et voluptatem.	2	2015-05-13 07:28:46.224363	2015-05-13 07:28:46.224363	4	4
+39	Voluptate magni ut eius eos modi molestias ipsum.	2	2015-05-13 07:28:46.227363	2015-05-13 07:28:46.227363	15	5
+40	Non reiciendis qui necessitatibus modi aliquid totam sunt.	4	2015-05-13 07:28:46.231363	2015-05-13 07:28:46.231363	15	4
+\.
+
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE SET; Schema: public; Owner: workshops
+--
+
+SELECT pg_catalog.setval('reviews_id_seq', 40, true);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: workshops
+--
+
+COPY schema_migrations (version) FROM stdin;
+20150510224851
+20140605201000
+20140605201457
+20140605201633
+20140605204902
+20140605225158
+20140606071025
+20140606091435
+20150510224824
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: workshops
+--
+
+COPY users (id, firstname, lastname, email, encrypted_password, admin, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) FROM stdin;
+1	Admin	Admin	admin@example.com	$2a$10$f9hD/ZoYvE4M9z643sThGOFU3j7pf9V/T9vNMk2r/Jr6kbm82rLdC	t	\N	\N	\N	0	\N	\N	\N	\N	2015-05-13 07:28:18.622784	2015-05-13 07:28:18.622784
+2	Casey	Burke	user1@example.com	$2a$10$6LRhf3mQalJPdNtw3SXJfOBgagu9o8C9olnMz6vOicvebi0TT2gqm	f	\N	\N	\N	0	\N	\N	\N	\N	2015-05-13 07:28:18.685787	2015-05-13 07:28:18.685787
+3	Gale	Maxwell	user2@example.com	$2a$10$mRqPb/wnYPSbZUJfOo6wwuVCzS5EtlHbCYv1faNLizmM47QpriFWK	f	\N	\N	\N	0	\N	\N	\N	\N	2015-05-13 07:28:18.748791	2015-05-13 07:28:18.748791
+4	Cohen	Lenny	user3@example.com	$2a$10$nVi9dXM/CX/drYxXdQm0POIYQchQ.io.Gqapbu1H60yfJQA/PBQ8m	f	\N	\N	\N	0	\N	\N	\N	\N	2015-05-13 07:28:18.810795	2015-05-13 07:28:18.810795
+6	Melvin	Daryl	user5@example.com	$2a$10$6m6o2.YLLA2slR6R0QEUs.sytvoYArKzufiO2rxUqfm5sCjkfa.ny	f	\N	\N	\N	0	\N	\N	\N	\N	2015-05-13 07:28:18.935802	2015-05-13 07:28:18.935802
+5	Kent	Jamison	user4@example.com	$2a$10$ZvnXgQFz0NMZ9p38/wYWgu9gJwyT4MtFneUBZ60SUkSYJduFNfUZ2	f	\N	\N	\N	1	2015-05-13 07:36:57.982489	2015-05-13 07:36:57.982489	127.0.0.1	127.0.0.1	2015-05-13 07:28:18.873798	2015-05-13 07:36:57.98349
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: workshops
+--
+
+SELECT pg_catalog.setval('users_id_seq', 6, true);
+
+
+--
+-- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: workshops; Tablespace: 
+--
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: workshops; Tablespace: 
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: workshops; Tablespace: 
+--
+
+ALTER TABLE ONLY reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: workshops; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: workshops; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: workshops; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: workshops; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
