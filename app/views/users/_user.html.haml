@@ -1,0 +1,23 @@
+%p
+  Firstname:
+  = @user.firstname
+%p
+  Lastname:
+  = @user.lastname
+%p
+  Contact info:
+  = @user.email
+
+%hr
+%div.panel.panel-default
+  %div.panel-heading
+    %h3.panel-title Reviews
+  %div.panel-body
+    - if reviews.count > 0
+      = render reviews.last(5).sort_by &:created_at
+    - else
+      %div.text-center
+        = 'no reviews to display'
+      
+= link_to 'Back', :back, html_options = { class: "btn btn-default"}
+= mail_to @user.email, "Send email", class: "btn btn-primary pull-right"

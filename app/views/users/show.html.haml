@@ -1,13 +1,11 @@
 %div.medium-form
   %p.text-left
     %b= link_to 'Home', root_path, class: "text-info"
- 
+    > users
   %hr
+  
   %div.panel.panel-default
     %div.panel-heading
-      %h3.panel-title New category
+      %h3.panel-title Profile info
     %div.panel-body   
-  
-      = render 'form'
-      
-      = link_to 'Back', categories_path, class: 'btn btn-default'
+      = render 'user'

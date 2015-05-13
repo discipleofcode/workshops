@@ -1,4 +1,10 @@
-%p= review.content
-%p
-  %b= review.rating
-  %em= review.author
+%div.panel.panel-default
+  %div.panel-body
+    %b
+      = link_to review.author, user_path(review.user_id)
+    %br
+    = review.created_at.strftime("%d-%m-%y")
+    - (1..review.rating).each do |i|
+      %span.glyphicon.glyphicon-star
+    %br
+    %blockquote= review.content

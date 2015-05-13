@@ -1,19 +1,32 @@
-%h1 Listing categories
-
-%table.table
-  %tr
-    %th Name
-    %th
-    %th
-    %th
-
-  - categories.each do |category|
+%div.medium-form
+  %p.text-left
+    %b= link_to 'Home', root_path, class: "text-info"
+    
+  %hr
+  
+  %h1 Categories
+  
+  %table.table.table-striped
     %tr
-      %td= category.name
-      %td= link_to 'Show', category
-      %td= link_to 'Edit', edit_category_path(category)
-      %td= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Category', new_category_path
+      %th Name
+      %th
+    - if categories.count > 0 
+      - categories.each do |category|
+        %tr
+          %td= category.name
+          %td.text-right
+            = link_to 'Show', category
+            - if current_user.try(:admin?)
+              |
+              = link_to 'Edit', edit_category_path(category)
+              |
+              = link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }
+    - else
+      %tr
+        %td.text-center{:colspan => 2}
+          = t('no_categories')
+  
+  %br
+  
+  - if current_user.try(:admin?)
+    = link_to 'New Category', new_category_path, class: 'btn btn-primary pull-right'

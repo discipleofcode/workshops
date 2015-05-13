@@ -1,17 +1,59 @@
-%p#notice= notice
+%div.medium-form
+  %p.text-left
+    %b= link_to 'Home', root_path, class: "text-info"
+    >
+    = link_to category.name, category_path(category)
+  
+  %hr
+      
+  %h3 Products in category #{category.name}
 
-%p
-  %b Name:
-  = category.name
+  %table#table-products-category.table.table-striped
+    %thead
+      %th Title
+      %th Price
+      %th Average rating
+      %th
+    %tbody
+    - if category.products.count > 0
+      - category.products.each do |product|
+        %tr
+          %td= product.title
+          %td= product.price
+          %td
+            - if product.average_rating
+              = number_with_precision(product.average_rating, :precision => 2, :significant => true)
+            - else
+              \-
+          %td.text-right
+            = link_to 'Show', category_product_path(product.category, product)
+            - if current_user.try(:admin?) || current_user == product.user
+              |
+              = link_to 'Edit', edit_category_product_path(product.category, product)
+              |
+              = link_to 'Destroy', category_product_path(product.category, product), method: :delete, data: { confirm: 'Are you sure?' }
+    - else
+      %tr
+        %td.text-center{:colspan => 4}
+          = 'No products in this category'   
+          
+  %hr
+  
+  = link_to 'Back', categories_path, class: 'btn btn-default'    
+  - if current_user.try(:admin?)
+    = link_to 'Edit category', edit_category_path(category), class: 'btn btn-default pull-right'  
+    
+  - if user_signed_in? 
+    %br
+    %br
+    %div.panel.panel-default
+      %div.panel-heading
+        %h3.panel-title New product
+      %div.panel-body
+        = render 'products/form'
+  - else
+    %div.pull-right
+      = 'Do you want to add new product?'
+      = link_to 'Sign in', new_user_session_path, class: "btn btn-primary"
+  
 
-%p
-  - category.products.each do |product|
-    = product.title
-
-%p
-  %h3 New product
-  = render 'products/form'
-
-= link_to 'Edit', edit_category_path(category)
-\|
-= link_to 'Back', categories_path, class: 'btn btn-primary'

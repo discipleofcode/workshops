@@ -1,25 +1,37 @@
-%p#notice= notice
-%p#error= flash[:error]
+%div.medium-form
+  - if flash[:error]
+    %div.alert.alert-danger= flash[:error]
+  
+  %p.text-left
+    %b= link_to 'Home', root_path, class: "text-info"
+    >
+    = link_to product.category.name, category_path(category)
+  
+  %hr
+  
+  %h2.text-right #{product.title}
 
-%p
-  %b Title:
-  = product.title
-%p
-  %b Description:
-  = product.description
-%p
-  %b Price:
-  = product.price
-
-%p
-  %b Category
-  = product.category.name
-
-%h3 Reviews
-= render 'reviews/form'
-
-= render reviews
-
-= link_to 'Edit', edit_category_product_path(category.id, product.id)
-\|
-= link_to 'Back', category_products_path, class: 'btn btn-primary'
+  %p.text-right
+    Price:
+    %span.badge= product.price
+ 
+  %div.panel.panel-default
+    %div.panel-heading
+      %h3.panel-title Description:
+    %div.panel-body
+      = product.description 
+ 
+  %hr
+  
+  = link_to 'Edit', edit_category_product_path(category.id, product.id), class: "pull-right btn btn-default"
+  = link_to 'Back', category_path(category.id), class: 'btn btn-primary'
+  
+  %br
+  %br
+   
+  %div.panel.panel-default
+    %div.panel-heading
+      %h3.panel-title Reviews
+    %div.panel-body
+      = render reviews
+      = render 'reviews/form'

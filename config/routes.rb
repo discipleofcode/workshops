@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     end
   end
 	
-  devise_for :user
+	resources :users
+	
+  devise_for :user, :controllers => { registrations: 'registrations' }
   root 'categories#index'
 end

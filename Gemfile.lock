@@ -80,11 +80,12 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
+    faker (1.4.3)
+      i18n (~> 0.5)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
-    ffaker (2.0.0)
     ffi (1.9.8)
     ffi (1.9.8-x86-mingw32)
     gh (0.14.0)
@@ -249,7 +250,7 @@ DEPENDENCIES
   devise
   draper
   factory_girl_rails
-  ffaker
+  faker
   haml-rails
   jquery-rails
   konf

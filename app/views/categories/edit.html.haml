@@ -1,7 +1,16 @@
-%h1 Editing category
-
-= render 'form'
-
-= link_to 'Show', category
-\|
-= link_to 'Back', categories_path, class: 'btn btn-primary'
+%div.medium-form
+  %p.text-left
+    %b= link_to 'Home', root_path, class: "text-info"
+    >
+    = link_to category.name, category_path(category)
+    
+  %hr
+  %div.panel.panel-default
+    %div.panel-heading
+      %h3.panel-title Editing category
+    %div.panel-body   
+      = render 'form'
+    
+      = link_to 'Back', categories_path, class: 'btn btn-default'  
+      \|
+      = link_to 'Show without saving', category

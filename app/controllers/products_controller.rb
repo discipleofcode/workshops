@@ -15,11 +15,14 @@ class ProductsController < ApplicationController
   end
 
   def edit
+    if (product.user != current_user && !current_user.admin?)
+      redirect_to category_product_url(category, product), :flash => { :error => "You are not allowed to edit this product." }     
+    end
   end
 
   def create
-    self.product = Product.new(product_params)
-
+    self.product = current_user.products.new(product_params)
+    
     if product.save
       category.products << product
       redirect_to category_product_url(category, product), notice: 'Product was successfully created.'
@@ -29,17 +32,29 @@ class ProductsController < ApplicationController
   end
 
   def update
-    if self.product.update(product_params)
-      redirect_to category_product_url(category, product), notice: 'Product was successfully updated.'
+    if product_params
+      if (product.user == current_user || current_user.admin?)
+        if self.product.update(product_params) 
+          redirect_to category_product_url(category, product), notice: 'Product was successfully updated.'  
+        else
+          redirect_to category_product_url(category, product), :flash => { :error => "Product not saved." }                  
+        end       
+      else
+        redirect_to category_product_url(category, product), :flash => { :error => "You are not allowed to edit this product." }
+      end
     else
-      render action: 'edit'
+      redirect_to category_product_url(category, product), :flash => { :error => "Ooops. Something went wrong. Product not saved successfully."}
     end
   end
 
   # DELETE /products/1
   def destroy
-    product.destroy
-    redirect_to category_url(product.category), notice: 'Product was successfully destroyed.'
+    if (product.user == current_user || current_user.admin?)
+      product.destroy
+      redirect_to category_url(product.category), notice: 'Product was successfully destroyed.'
+    else
+        redirect_to category_product_url(category, product), :flash => { :error => "You are not allowed to destroy this product." }
+    end  
   end
 
   private
